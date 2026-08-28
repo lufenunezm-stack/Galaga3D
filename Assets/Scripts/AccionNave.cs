@@ -13,6 +13,9 @@ public class AccionNave : MonoBehaviour
     public Transform puntoCreacionBala; // Objeto vacío en la punta de la nave
     public float fuerzaDisparo = 20f;
 
+    [Header("Audio")]
+    public AudioSource audioDisparo; // El componente AudioSource de la nave
+
     [Header("Input System References")]
     public InputActionReference accionMover;
     public InputActionReference accionDisparar; // Nueva referencia para el botón de disparo
@@ -84,6 +87,8 @@ public class AccionNave : MonoBehaviour
         {
             rbBala.AddForce(puntoCreacionBala.forward * fuerzaDisparo, ForceMode.Impulse);
         }
+        audioDisparo.pitch = Random.Range(0.65f, 2f);
+        audioDisparo.Play();
     }
 
     private void Update()
