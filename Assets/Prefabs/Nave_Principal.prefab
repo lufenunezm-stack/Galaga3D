@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 8398700843989641419}
   - component: {fileID: 2886092271095028484}
   - component: {fileID: 8510907031588023308}
+  - component: {fileID: -7100986305653567674}
   m_Layer: 0
   m_Name: Nave_Principal
   m_TagString: Untagged
@@ -296,3 +297,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &-7100986305653567674
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2857967800086220380}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 18.540884, y: 2.192114, z: 19.689606}
+  m_Center: {x: 0.0000019073486, y: 0, z: 0.000008106232}

@@ -15,8 +15,10 @@ public class ControladorBala : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.CompareTag("Jugador") || other.gameObject.CompareTag("BalaJugador")) return;
+
         Destroy(this.gameObject);
     }
 }

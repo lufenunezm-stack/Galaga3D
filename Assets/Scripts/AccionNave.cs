@@ -20,7 +20,14 @@ public class AccionNave : MonoBehaviour
     public InputActionReference accionMover;
     public InputActionReference accionDisparar; // Nueva referencia para el botón de disparo
 
+    [Header("Vidas")]
+    public float retrasoRespawn = 2f;
+
     private float direccionX = 0f;
+    private bool estaViva = true;
+    private Vector3 posicionInicial;
+    private Collider[] colliders;
+    private MeshRenderer meshRenderer;
 
     private void OnEnable()
     {
@@ -76,6 +83,7 @@ public class AccionNave : MonoBehaviour
 
     private void DispararBala()
     {
+        if (!estaViva) return;
         if (balaPrefab == null || puntoCreacionBala == null) return;
 
         // 1. Instancia la bala en la posición del punto de creación
@@ -91,14 +99,70 @@ public class AccionNave : MonoBehaviour
         audioDisparo.Play();
     }
 
+    private void Start()
+    {
+        posicionInicial = transform.position;
+        colliders = GetComponents<Collider>();
+        meshRenderer = GetComponent<MeshRenderer>();
+    }
+
     private void Update()
     {
+        if (!estaViva) return;
+
         if (direccionX != 0)
         {
             float nuevaX = this.transform.position.x + (direccionX * velocidad * Time.deltaTime);
             nuevaX = Mathf.Clamp(nuevaX, limiteIzquierdo, limiteDerecho);
 
             this.transform.position = new Vector3(nuevaX, this.transform.position.y, this.transform.position.z);
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (!estaViva) return;
+
+        // Mueres si te da una bala enemiga o si un enemigo en picada te choca
+        if (other.gameObject.CompareTag("BalaEnemiga") || other.gameObject.CompareTag("Enemigo"))
+        {
+            Morir();
+        }
+    }
+
+    private void Morir()
+    {
+        estaViva = false;
+
+        if (GameManager.Instancia != null)
+        {
+            GameManager.Instancia.InstanciarExplosion(transform.position);
+        }
+
+        SetVisible(false);
+
+        bool sigueVivo = GameManager.Instancia == null || GameManager.Instancia.PerderVida();
+
+        if (sigueVivo)
+        {
+            Invoke(nameof(Reaparecer), retrasoRespawn);
+        }
+    }
+
+    private void Reaparecer()
+    {
+        transform.position = posicionInicial;
+        SetVisible(true);
+        estaViva = true;
+    }
+
+    private void SetVisible(bool visible)
+    {
+        if (meshRenderer != null) meshRenderer.enabled = visible;
+
+        foreach (Collider col in colliders)
+        {
+            col.enabled = visible;
         }
     }
 }
