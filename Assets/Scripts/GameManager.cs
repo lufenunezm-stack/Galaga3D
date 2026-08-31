@@ -10,8 +10,9 @@ public class GameManager : MonoBehaviour
     public int vidasIniciales = 3;
     public GameObject[] iconosVidas;
 
-    [Header("Puntaje")]
+    [Header("Puntaje y Récord")]
     public TextMeshProUGUI textoPuntaje;
+    public TextMeshProUGUI textoHighScore;
 
     [Header("Explosión")]
     public GameObject explosionPrefab;
@@ -21,11 +22,16 @@ public class GameManager : MonoBehaviour
 
     private int vidasActuales;
     private int puntajeActual;
+    private int highScoreActual;
 
     void Awake()
     {
         Instancia = this;
         vidasActuales = vidasIniciales;
+
+
+        highScoreActual = PlayerPrefs.GetInt("HighScore", 0000);
+        ActualizarTextoHighScore();
     }
 
     public void InstanciarExplosion(Vector3 posicion)
@@ -48,7 +54,6 @@ public class GameManager : MonoBehaviour
         if (vidasActuales <= 0)
         {
             JuegoActivo = false;
-            // Al quedarse sin vidas, carga de inmediato la escena de Game Over
             SceneManager.LoadScene("GameOver");
             return false;
         }
@@ -59,9 +64,28 @@ public class GameManager : MonoBehaviour
     public void SumarPuntaje(int cantidad)
     {
         puntajeActual += cantidad;
+
         if (textoPuntaje != null)
         {
             textoPuntaje.text = puntajeActual.ToString("0000");
+        }
+
+        if (puntajeActual > highScoreActual)
+        {
+            highScoreActual = puntajeActual;
+
+            PlayerPrefs.SetInt("HighScore", highScoreActual);
+            PlayerPrefs.Save();
+
+            ActualizarTextoHighScore();
+        }
+    }
+
+    void ActualizarTextoHighScore()
+    {
+        if (textoHighScore != null)
+        {
+            textoHighScore.text = highScoreActual.ToString("0000");
         }
     }
 }

@@ -522,7 +522,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 9999
+  m_text: 0000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1240,6 +1240,10 @@ PrefabInstance:
       propertyPath: panelGameOver
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3763544755877368010, guid: f6c51e90d62dee342b0d38c3f574fed7, type: 3}
+      propertyPath: textoHighScore
+      value: 
+      objectReference: {fileID: 428047594}
     - target: {fileID: 3763544755877368010, guid: f6c51e90d62dee342b0d38c3f574fed7, type: 3}
       propertyPath: panelMenuPrincipal
       value: 
