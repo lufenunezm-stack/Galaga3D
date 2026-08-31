@@ -29,8 +29,7 @@ public class GameManager : MonoBehaviour
         Instancia = this;
         vidasActuales = vidasIniciales;
 
-
-        highScoreActual = PlayerPrefs.GetInt("HighScore", 0000);
+        highScoreActual = PlayerPrefs.GetInt("HighScore", 0);
         ActualizarTextoHighScore();
     }
 
@@ -79,6 +78,12 @@ public class GameManager : MonoBehaviour
 
             ActualizarTextoHighScore();
         }
+    }
+
+    public void GuardarPuntajeAntesDeSalir()
+    {
+        PlayerPrefs.SetInt("PuntajeFinal", puntajeActual);
+        PlayerPrefs.Save();
     }
 
     void ActualizarTextoHighScore()

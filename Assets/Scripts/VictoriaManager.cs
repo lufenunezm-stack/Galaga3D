@@ -1,0 +1,38 @@
+using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
+
+public class VictoriaManager : MonoBehaviour
+{
+    [Header("UI")]
+    public TextMeshProUGUI textoPuntajeFinal;
+    public TMP_InputField inputNombreJugador; // Opcional para guardar el nombre
+
+    void Start()
+    {
+        // 1. Recuperamos el puntaje guardado o pasados por PlayerPrefs
+        int puntajeFinal = PlayerPrefs.GetInt("PuntajeFinal", 0);
+
+        if (textoPuntajeFinal != null)
+        {
+            textoPuntajeFinal.text = "Puntaje : " + puntajeFinal.ToString("0000");
+        }
+    }
+
+    // Método para guardar el nombre y puntaje (Opcional)
+    public void GuardarRécord()
+    {
+        if (inputNombreJugador != null)
+        {
+            string nombre = inputNombreJugador.text;
+            PlayerPrefs.SetString("UltimoNombre", nombre);
+            Debug.Log("Récord guardado para: " + nombre);
+        }
+    }
+
+    // Botón para volver al menú principal
+    public void VolverAlMenu()
+    {
+        SceneManager.LoadScene("MenuPrincipal");
+    }
+}
