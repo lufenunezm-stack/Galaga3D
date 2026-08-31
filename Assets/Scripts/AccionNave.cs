@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem; // Necesario para InputActionReference
 
@@ -22,9 +23,12 @@ public class AccionNave : MonoBehaviour
 
     [Header("Vidas")]
     public float retrasoRespawn = 2f;
+    public float duracionInvulnerabilidad = 2f;
+    public float intervaloParpadeo = 0.15f;
 
     private float direccionX = 0f;
     private bool estaViva = true;
+    private bool esInvulnerable = false;
     private Vector3 posicionInicial;
     private Collider[] colliders;
     private MeshRenderer meshRenderer;
@@ -121,7 +125,7 @@ public class AccionNave : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (!estaViva) return;
+        if (!estaViva || esInvulnerable) return;
 
         // Mueres si te da una bala enemiga o si un enemigo en picada te choca
         if (other.gameObject.CompareTag("BalaEnemiga") || other.gameObject.CompareTag("Enemigo"))
@@ -154,6 +158,24 @@ public class AccionNave : MonoBehaviour
         transform.position = posicionInicial;
         SetVisible(true);
         estaViva = true;
+
+        StartCoroutine(Invulnerabilidad());
+    }
+
+    private IEnumerator Invulnerabilidad()
+    {
+        esInvulnerable = true;
+        float tiempoTranscurrido = 0f;
+
+        while (tiempoTranscurrido < duracionInvulnerabilidad)
+        {
+            if (meshRenderer != null) meshRenderer.enabled = !meshRenderer.enabled;
+            yield return new WaitForSeconds(intervaloParpadeo);
+            tiempoTranscurrido += intervaloParpadeo;
+        }
+
+        if (meshRenderer != null) meshRenderer.enabled = true;
+        esInvulnerable = false;
     }
 
     private void SetVisible(bool visible)
