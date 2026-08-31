@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,8 +8,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Vidas")]
     public int vidasIniciales = 3;
-
-    [Tooltip("Los iconos de vida 'de repuesto' (no cuenta la nave que estás pilotando). Se apagan de a uno al perder una vida.")]
     public GameObject[] iconosVidas;
 
     [Header("Puntaje")]
@@ -32,13 +31,10 @@ public class GameManager : MonoBehaviour
     public void InstanciarExplosion(Vector3 posicion)
     {
         if (explosionPrefab == null) return;
-
         GameObject fx = Instantiate(explosionPrefab, posicion, Quaternion.identity);
         Destroy(fx, duracionExplosion);
     }
 
-    // Descuenta una vida y apaga el icono correspondiente.
-    // Devuelve true si el jugador puede seguir jugando (le quedan vidas).
     public bool PerderVida()
     {
         vidasActuales--;
@@ -52,6 +48,8 @@ public class GameManager : MonoBehaviour
         if (vidasActuales <= 0)
         {
             JuegoActivo = false;
+            // Al quedarse sin vidas, carga de inmediato la escena de Game Over
+            SceneManager.LoadScene("GameOver");
             return false;
         }
 
@@ -61,7 +59,6 @@ public class GameManager : MonoBehaviour
     public void SumarPuntaje(int cantidad)
     {
         puntajeActual += cantidad;
-
         if (textoPuntaje != null)
         {
             textoPuntaje.text = puntajeActual.ToString("0000");

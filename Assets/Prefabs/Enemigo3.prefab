@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 8354204086501758190}
   - component: {fileID: 4258411901596565577}
   m_Layer: 6
-  m_Name: SM_Ship_Stealth_04
+  m_Name: Enemigo3
   m_TagString: Enemigo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
