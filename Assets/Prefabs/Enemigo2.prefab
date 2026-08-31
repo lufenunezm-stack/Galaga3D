@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3061296406201756221}
   - component: {fileID: 4514366144806079195}
   m_Layer: 6
-  m_Name: SM_Ship_Fighter_Heavy_01
+  m_Name: Enemigo2
   m_TagString: Enemigo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

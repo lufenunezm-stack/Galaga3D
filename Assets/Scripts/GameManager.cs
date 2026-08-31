@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,12 +8,11 @@ public class GameManager : MonoBehaviour
 
     [Header("Vidas")]
     public int vidasIniciales = 3;
-
-    [Tooltip("Los iconos de vida 'de repuesto' (no cuenta la nave que estás pilotando). Se apagan de a uno al perder una vida.")]
     public GameObject[] iconosVidas;
 
-    [Header("Puntaje")]
+    [Header("Puntaje y Récord")]
     public TextMeshProUGUI textoPuntaje;
+    public TextMeshProUGUI textoHighScore;
 
     [Header("Explosión")]
     public GameObject explosionPrefab;
@@ -22,23 +22,24 @@ public class GameManager : MonoBehaviour
 
     private int vidasActuales;
     private int puntajeActual;
+    private int highScoreActual;
 
     void Awake()
     {
         Instancia = this;
         vidasActuales = vidasIniciales;
+
+        highScoreActual = PlayerPrefs.GetInt("HighScore", 0);
+        ActualizarTextoHighScore();
     }
 
     public void InstanciarExplosion(Vector3 posicion)
     {
         if (explosionPrefab == null) return;
-
         GameObject fx = Instantiate(explosionPrefab, posicion, Quaternion.identity);
         Destroy(fx, duracionExplosion);
     }
 
-    // Descuenta una vida y apaga el icono correspondiente.
-    // Devuelve true si el jugador puede seguir jugando (le quedan vidas).
     public bool PerderVida()
     {
         vidasActuales--;
@@ -52,6 +53,7 @@ public class GameManager : MonoBehaviour
         if (vidasActuales <= 0)
         {
             JuegoActivo = false;
+            SceneManager.LoadScene("GameOver");
             return false;
         }
 
@@ -65,6 +67,30 @@ public class GameManager : MonoBehaviour
         if (textoPuntaje != null)
         {
             textoPuntaje.text = puntajeActual.ToString("0000");
+        }
+
+        if (puntajeActual > highScoreActual)
+        {
+            highScoreActual = puntajeActual;
+
+            PlayerPrefs.SetInt("HighScore", highScoreActual);
+            PlayerPrefs.Save();
+
+            ActualizarTextoHighScore();
+        }
+    }
+
+    public void GuardarPuntajeAntesDeSalir()
+    {
+        PlayerPrefs.SetInt("PuntajeFinal", puntajeActual);
+        PlayerPrefs.Save();
+    }
+
+    void ActualizarTextoHighScore()
+    {
+        if (textoHighScore != null)
+        {
+            textoHighScore.text = highScoreActual.ToString("0000");
         }
     }
 }
