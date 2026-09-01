@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.SceneManagement;
 
 public class EnemySpawner : MonoBehaviour
@@ -28,8 +29,9 @@ public class EnemySpawner : MonoBehaviour
         public float esperaDespues = 1f;
 
         [Header("Puntaje")]
-        [Tooltip("Puntos que se suman al destruir la última nave de esta oleada.")]
-        public int puntajeOleada = 100;
+        [FormerlySerializedAs("puntajeOleada")]
+        [Tooltip("Puntos extra que se suman si esta oleada se destruye por completo sin perder vidas.")]
+        public int bonoOleadaPerfecta = 100;
     }
 
     [Header("Oleadas")]
@@ -47,7 +49,8 @@ public class EnemySpawner : MonoBehaviour
     public class EstadoOleada
     {
         public int enemigosVivos;
-        public int puntaje;
+        public int bonoOleadaPerfecta;
+        public int vidasAlIniciar;
     }
 
     private bool oleadaEnCurso = false;
@@ -112,7 +115,8 @@ public class EnemySpawner : MonoBehaviour
             EstadoOleada estadoOleada = new EstadoOleada
             {
                 enemigosVivos = naves.Length,
-                puntaje = oleada.puntajeOleada
+                bonoOleadaPerfecta = oleada.bonoOleadaPerfecta,
+                vidasAlIniciar = GameManager.Instancia != null ? GameManager.Instancia.VidasActuales : 0
             };
 
             foreach (EnemigoGalaga nave in naves)
@@ -153,7 +157,12 @@ public class EnemySpawner : MonoBehaviour
 
         if (estadoOleada.enemigosVivos <= 0 && GameManager.Instancia != null)
         {
-            GameManager.Instancia.SumarPuntaje(estadoOleada.puntaje);
+            bool oleadaPerfecta = GameManager.Instancia.VidasActuales == estadoOleada.vidasAlIniciar;
+
+            if (oleadaPerfecta && estadoOleada.bonoOleadaPerfecta > 0)
+            {
+                GameManager.Instancia.SumarPuntaje(estadoOleada.bonoOleadaPerfecta);
+            }
         }
 
         Debug.Log("Enemigos destruidos: " + enemigosDestruidos + " de " + totalEnemigosNivel);

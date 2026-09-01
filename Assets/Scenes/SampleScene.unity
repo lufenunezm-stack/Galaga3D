@@ -1277,6 +1277,8 @@ MonoBehaviour:
   accionMover: {fileID: 1627345386614998379, guid: ae24d31be91a5cf468ec47eb55491934, type: 3}
   accionDisparar: {fileID: 8239266603993073054, guid: ae24d31be91a5cf468ec47eb55491934, type: 3}
   retrasoRespawn: 2
+  duracionInvulnerabilidad: 2
+  intervaloParpadeo: 0.15
 --- !u!4 &458437526 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4563042777394416, guid: 79035093c9587c246b3bb29ffc5838a4, type: 3}
@@ -1400,6 +1402,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 30.085047, y: 5.322583, z: 21.906847}
   m_Center: {x: -0.000005722046, y: 0.00000059604645, z: 0.000002861023}
+--- !u!54 &458437535
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458437515}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &562443700
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1679,6 +1708,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1029753612667854, guid: 79035093c9587c246b3bb29ffc5838a4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 458437531}
+    - targetCorrespondingSourceObject: {fileID: 1029753612667854, guid: 79035093c9587c246b3bb29ffc5838a4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 458437535}
   m_SourcePrefab: {fileID: 100100000, guid: 79035093c9587c246b3bb29ffc5838a4, type: 3}
 --- !u!1 &911963633 stripped
 GameObject:
@@ -2300,7 +2332,7 @@ MonoBehaviour:
     delayEntreNaves: 0.3
     esperaAntes: 1
     esperaDespues: 3
-    puntajeOleada: 100
+    bonoOleadaPerfecta: 100
   - nombreOleada: oleada2
     contenedorNaves: {fileID: 1713673128}
     tipoEntrada: 1
@@ -2308,7 +2340,7 @@ MonoBehaviour:
     delayEntreNaves: 0.3
     esperaAntes: 1
     esperaDespues: 3
-    puntajeOleada: 100
+    bonoOleadaPerfecta: 100
   - nombreOleada: oleada3
     contenedorNaves: {fileID: 190957506}
     tipoEntrada: 0
@@ -2316,7 +2348,7 @@ MonoBehaviour:
     delayEntreNaves: 0.3
     esperaAntes: 1
     esperaDespues: 3
-    puntajeOleada: 100
+    bonoOleadaPerfecta: 100
   - nombreOleada: oleada4
     contenedorNaves: {fileID: 1929017575}
     tipoEntrada: 1
@@ -2324,7 +2356,7 @@ MonoBehaviour:
     delayEntreNaves: 0.3
     esperaAntes: 1
     esperaDespues: 3
-    puntajeOleada: 100
+    bonoOleadaPerfecta: 100
   iniciarAutomaticamente: 1
   nombreEscenaVictoria: Victoria
 --- !u!4 &1345192350
