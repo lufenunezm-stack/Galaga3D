@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public float duracionExplosion = 2f;
 
     public bool JuegoActivo { get; private set; } = true;
+    public int VidasActuales => vidasActuales;
 
     private int vidasActuales;
     private int puntajeActual;

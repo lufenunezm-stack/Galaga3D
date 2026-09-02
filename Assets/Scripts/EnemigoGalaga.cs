@@ -117,6 +117,14 @@ public class EnemigoGalaga : MonoBehaviour
 
     private float proximoDisparo;
 
+    // Puntaje
+
+    [Header("Puntaje")]
+    [Tooltip("Puntos que suma al jugador cuando esta nave es destruida.")]
+    public int puntaje = 100;
+
+    private bool destruido = false;
+
     [Header("Audio")]
     public AudioSource audioMuerte; // El componente AudioSource de la nave
 
@@ -375,11 +383,20 @@ public class EnemigoGalaga : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (destruido) return;
+
         if (other.CompareTag("BalaJugador"))
         {
+            destruido = true;
+
             if (GameManager.Instancia != null)
             {
                 GameManager.Instancia.InstanciarExplosion(transform.position);
+                GameManager.Instancia.SumarPuntaje(puntaje);
+            }
+            if (audioMuerte != null && audioMuerte.clip != null)
+            {
+                AudioSource.PlayClipAtPoint(audioMuerte.clip, transform.position, 10.0f);
             }
             if (audioMuerte != null && audioMuerte.clip != null)
             {
