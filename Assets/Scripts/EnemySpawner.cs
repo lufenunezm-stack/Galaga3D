@@ -41,8 +41,11 @@ public class EnemySpawner : MonoBehaviour
     [Header("Escena de Victoria")]
     public string nombreEscenaVictoria = "Victoria";
 
-    private int totalEnemigosNivel = 0;
+    private int totalEnemigosRealNivel = 0;
     private int enemigosDestruidos = 0;
+    private bool oleadaEnCurso = false;
+    private bool todasLasOleadasSpawneadas = false;
+    private bool victoriaActivada = false;
 
     public class EstadoOleada
     {
@@ -50,27 +53,33 @@ public class EnemySpawner : MonoBehaviour
         public int puntaje;
     }
 
-    private bool oleadaEnCurso = false;
     private Dictionary<EnemigoGalaga, Vector3> posicionesFormacion = new Dictionary<EnemigoGalaga, Vector3>();
 
     void Awake()
     {
+        posicionesFormacion.Clear();
+        totalEnemigosRealNivel = 0;
+
         foreach (Oleada oleada in oleadas)
         {
             if (oleada.contenedorNaves == null) continue;
 
-            EnemigoGalaga[] naves = oleada.contenedorNaves.GetComponentsInChildren<EnemigoGalaga>(true);
-
-            totalEnemigosNivel += naves.Length;
-
-            foreach (EnemigoGalaga nave in naves)
+            // Buscamos componentes solo de nivel directo para evitar duplicados en cascada
+            foreach (Transform hijo in oleada.contenedorNaves)
             {
-                if (nave == null) continue;
+                if (hijo == null) continue;
 
-                posicionesFormacion[nave] = nave.transform.position;
-                nave.gameObject.SetActive(false);
+                EnemigoGalaga nave = hijo.GetComponent<EnemigoGalaga>();
+                if (nave != null && !posicionesFormacion.ContainsKey(nave))
+                {
+                    posicionesFormacion[nave] = nave.transform.position;
+                    totalEnemigosRealNivel++;
+                    nave.gameObject.SetActive(false);
+                }
             }
         }
+
+        Debug.Log("Total de enemigos reales detectados en el nivel: " + totalEnemigosRealNivel);
     }
 
     void Start()
@@ -92,6 +101,7 @@ public class EnemySpawner : MonoBehaviour
     private IEnumerator EjecutarOleadas()
     {
         oleadaEnCurso = true;
+        todasLasOleadasSpawneadas = false;
 
         foreach (Oleada oleada in oleadas)
         {
@@ -107,19 +117,26 @@ public class EnemySpawner : MonoBehaviour
                 yield return new WaitForSeconds(oleada.esperaAntes);
             }
 
-            EnemigoGalaga[] naves = oleada.contenedorNaves.GetComponentsInChildren<EnemigoGalaga>(true);
+            List<EnemigoGalaga> navesValidasOleada = new List<EnemigoGalaga>();
+            foreach (Transform hijo in oleada.contenedorNaves)
+            {
+                if (hijo == null) continue;
+                EnemigoGalaga nave = hijo.GetComponent<EnemigoGalaga>();
+                if (nave != null && posicionesFormacion.ContainsKey(nave))
+                {
+                    navesValidasOleada.Add(nave);
+                }
+            }
 
             EstadoOleada estadoOleada = new EstadoOleada
             {
-                enemigosVivos = naves.Length,
+                enemigosVivos = navesValidasOleada.Count,
                 puntaje = oleada.puntajeOleada
             };
 
-            foreach (EnemigoGalaga nave in naves)
+            foreach (EnemigoGalaga nave in navesValidasOleada)
             {
-                if (nave == null) continue;
-
-                if (!posicionesFormacion.TryGetValue(nave, out Vector3 posicionFormacion)) continue;
+                Vector3 posicionFormacion = posicionesFormacion[nave];
 
                 nave.ConfigurarOleada(
                     oleada.tipoEntrada,
@@ -144,10 +161,13 @@ public class EnemySpawner : MonoBehaviour
         }
 
         oleadaEnCurso = false;
+        todasLasOleadasSpawneadas = true;
     }
 
     public void NotificarEnemigoDestruido(EstadoOleada estadoOleada)
     {
+        if (victoriaActivada) return;
+
         estadoOleada.enemigosVivos--;
         enemigosDestruidos++;
 
@@ -156,11 +176,12 @@ public class EnemySpawner : MonoBehaviour
             GameManager.Instancia.SumarPuntaje(estadoOleada.puntaje);
         }
 
-        Debug.Log("Enemigos destruidos: " + enemigosDestruidos + " de " + totalEnemigosNivel);
+        Debug.Log("Enemigos destruidos: " + enemigosDestruidos + " de " + totalEnemigosRealNivel);
 
-        if (enemigosDestruidos >= totalEnemigosNivel)
+        if (todasLasOleadasSpawneadas && enemigosDestruidos >= totalEnemigosRealNivel && !victoriaActivada)
         {
-            Debug.Log("¡Victoria! Todas las naves han sido destruidas.");
+            victoriaActivada = true;
+            Debug.Log("¡Victoria! Todas las oleadas completadas y enemigos destruidos.");
 
             if (GameManager.Instancia != null)
             {

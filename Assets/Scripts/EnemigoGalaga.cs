@@ -117,6 +117,10 @@ public class EnemigoGalaga : MonoBehaviour
 
     private float proximoDisparo;
 
+    [Header("Audio")]
+    public AudioSource audioMuerte; // El componente AudioSource de la nave
+
+
     // Start / Update
 
     void Start()
@@ -232,56 +236,56 @@ public class EnemigoGalaga : MonoBehaviour
         {
             // Llegar al círculo
             case FaseCircular.LlegandoAlCirculo:
-            {
-                float t = Mathf.Clamp01(tiempoFaseCircular / duracionLlegadaCirculo);
-                t = Curvas.EaseInOut(t);
-
-                transform.position = Vector3.Lerp(puntoInicio, puntoEntradaCirculo, t);
-
-                if (t >= 1f)
                 {
-                    tiempoFaseCircular = 0f;
-                    faseCircular = FaseCircular.DandoVuelta;
+                    float t = Mathf.Clamp01(tiempoFaseCircular / duracionLlegadaCirculo);
+                    t = Curvas.EaseInOut(t);
+
+                    transform.position = Vector3.Lerp(puntoInicio, puntoEntradaCirculo, t);
+
+                    if (t >= 1f)
+                    {
+                        tiempoFaseCircular = 0f;
+                        faseCircular = FaseCircular.DandoVuelta;
+                    }
+                    break;
                 }
-                break;
-            }
 
             // Dar la vuelta
             case FaseCircular.DandoVuelta:
-            {
-                float t = Mathf.Clamp01(tiempoFaseCircular / duracionCirculo);
-                float angulo = anguloInicialCirculo + (360f * vueltasCirculo * t);
-                float rad = angulo * Mathf.Deg2Rad;
-
-                Vector3 offset = new Vector3(Mathf.Cos(rad), 0f, Mathf.Sin(rad)) * radioCirculo;
-                transform.position = centroCirculo + offset;
-
-                if (t >= 1f)
                 {
-                    puntoSalidaCirculo = transform.position;
-                    tiempoFaseCircular = 0f;
-                    faseCircular = FaseCircular.Acomodando;
+                    float t = Mathf.Clamp01(tiempoFaseCircular / duracionCirculo);
+                    float angulo = anguloInicialCirculo + (360f * vueltasCirculo * t);
+                    float rad = angulo * Mathf.Deg2Rad;
+
+                    Vector3 offset = new Vector3(Mathf.Cos(rad), 0f, Mathf.Sin(rad)) * radioCirculo;
+                    transform.position = centroCirculo + offset;
+
+                    if (t >= 1f)
+                    {
+                        puntoSalidaCirculo = transform.position;
+                        tiempoFaseCircular = 0f;
+                        faseCircular = FaseCircular.Acomodando;
+                    }
+                    break;
                 }
-                break;
-            }
 
             // Salir del círculo
             case FaseCircular.Acomodando:
-            {
-                float t = Mathf.Clamp01(tiempoFaseCircular / duracionAcomodo);
-                t = Curvas.EaseInOut(t);
-
-                transform.position = Vector3.Lerp(puntoSalidaCirculo, posicionFormacion, t);
-
-                if (t >= 1f)
                 {
-                    transform.position = posicionFormacion;
-                    estadoActual = EstadoEnemigo.EnFormacion;
-                    tiempoFormacion = 0f;
-                    ProgramarSiguienteAtaque();
+                    float t = Mathf.Clamp01(tiempoFaseCircular / duracionAcomodo);
+                    t = Curvas.EaseInOut(t);
+
+                    transform.position = Vector3.Lerp(puntoSalidaCirculo, posicionFormacion, t);
+
+                    if (t >= 1f)
+                    {
+                        transform.position = posicionFormacion;
+                        estadoActual = EstadoEnemigo.EnFormacion;
+                        tiempoFormacion = 0f;
+                        ProgramarSiguienteAtaque();
+                    }
+                    break;
                 }
-                break;
-            }
         }
     }
 
@@ -376,6 +380,10 @@ public class EnemigoGalaga : MonoBehaviour
             if (GameManager.Instancia != null)
             {
                 GameManager.Instancia.InstanciarExplosion(transform.position);
+            }
+            if (audioMuerte != null && audioMuerte.clip != null)
+            {
+                AudioSource.PlayClipAtPoint(audioMuerte.clip, transform.position, 10.0f);
             }
 
             if (spawnerDueño != null)
