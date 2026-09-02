@@ -134,7 +134,7 @@ public class EnemySpawner : MonoBehaviour
             EstadoOleada estadoOleada = new EstadoOleada
             {
                 enemigosVivos = navesValidasOleada.Count,
-                puntaje = oleada.puntajeOleada
+                puntaje = oleada.puntajeOleada,
                 enemigosVivos = naves.Length,
                 bonoOleadaPerfecta = oleada.bonoOleadaPerfecta,
                 vidasAlIniciar = GameManager.Instancia != null ? GameManager.Instancia.VidasActuales : 0
