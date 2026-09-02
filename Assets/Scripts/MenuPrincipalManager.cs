@@ -5,7 +5,7 @@ public class MenuPrincipalManager : MonoBehaviour
 {
     public void Jugar()
     {
-        SceneManager.LoadScene("Maanuus"); // Carga tu escena de juego
+        SceneManager.LoadScene("Nivel_1"); // Carga tu escena de juego
     }
 
 }

@@ -5,7 +5,7 @@ public class GameOverManager : MonoBehaviour
 {
     public void Reintentar()
     {
-        SceneManager.LoadScene("Maanuus"); // Vuelve a arrancar el juego
+        SceneManager.LoadScene("Nivel_1"); // Vuelve a arrancar el juego
     }
 
     public void VolverAlMenu()

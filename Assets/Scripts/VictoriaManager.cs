@@ -19,17 +19,6 @@ public class VictoriaManager : MonoBehaviour
         }
     }
 
-    // Método para guardar el nombre y puntaje (Opcional)
-    public void GuardarRécord()
-    {
-        if (inputNombreJugador != null)
-        {
-            string nombre = inputNombreJugador.text;
-            PlayerPrefs.SetString("UltimoNombre", nombre);
-            Debug.Log("Récord guardado para: " + nombre);
-        }
-    }
-
     // Botón para volver al menú principal
     public void VolverAlMenu()
     {
