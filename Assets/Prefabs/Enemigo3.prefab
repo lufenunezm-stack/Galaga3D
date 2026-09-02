@@ -188,7 +188,7 @@ MonoBehaviour:
   fuerzaDisparo: 15
   cadenciaMinima: 2
   cadenciaMaxima: 6
-  puntaje: 100
+  puntaje: 75
   audioMuerte: {fileID: 5807950392845862937}
 --- !u!65 &4258411901596565577
 BoxCollider:

@@ -209,7 +209,7 @@ MonoBehaviour:
   fuerzaDisparo: 15
   cadenciaMinima: 2
   cadenciaMaxima: 6
-  puntaje: 100
+  puntaje: 30
   audioMuerte: {fileID: 8524459638558369359}
 --- !u!82 &8524459638558369359
 AudioSource:
