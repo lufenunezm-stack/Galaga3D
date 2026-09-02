@@ -398,11 +398,6 @@ public class EnemigoGalaga : MonoBehaviour
             {
                 AudioSource.PlayClipAtPoint(audioMuerte.clip, transform.position, 10.0f);
             }
-            if (audioMuerte != null && audioMuerte.clip != null)
-            {
-                AudioSource.PlayClipAtPoint(audioMuerte.clip, transform.position, 10.0f);
-            }
-
             if (spawnerDueño != null)
             {
                 spawnerDueño.NotificarEnemigoDestruido(estadoOleada);

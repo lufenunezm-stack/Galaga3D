@@ -16,6 +16,7 @@ public class AccionNave : MonoBehaviour
 
     [Header("Audio")]
     public AudioSource audioDisparo; // El componente AudioSource de la nave
+    public AudioSource audioMuerte; // El componente AudioSource de la nave
 
     [Header("Input System References")]
     public InputActionReference accionMover;
@@ -150,6 +151,10 @@ public class AccionNave : MonoBehaviour
         if (sigueVivo)
         {
             Invoke(nameof(Reaparecer), retrasoRespawn);
+        }
+        if (audioMuerte != null && audioMuerte.clip != null)
+        {
+            AudioSource.PlayClipAtPoint(audioMuerte.clip, transform.position, 10.0f);
         }
     }
 

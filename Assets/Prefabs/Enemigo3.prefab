@@ -188,6 +188,7 @@ MonoBehaviour:
   fuerzaDisparo: 15
   cadenciaMinima: 2
   cadenciaMaxima: 6
+  puntaje: 100
   audioMuerte: {fileID: 5807950392845862937}
 --- !u!65 &4258411901596565577
 BoxCollider:
@@ -221,7 +222,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 5f34ded9e49aa5c4d8c1f58a67dfca4e, type: 3}
+  m_Resource: {fileID: 8300000, guid: c4ea685d3d77b1e40ad69e6dc5775315, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
